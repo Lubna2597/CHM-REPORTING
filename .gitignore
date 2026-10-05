@@ -1,0 +1,24 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Database — never commit real patient data
+*.db
+*.sqlite3
+backups/
+
+# Secrets
+.env
+
+# Editor/OS junk
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

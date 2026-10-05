@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<h3>Admin Dashboard</h3>
+
+<p>Current date &amp; time: <strong>{{ now.strftime('%Y-%m-%d %H:%M:%S') }}</strong></p>
+
+<p class="top-links">
+    <a href="{{ url_for('admin.export_excel') }}">Download Excel Report</a>
+    <a href="{{ url_for('admin.manage_users') }}">Manage Users</a>
+    <a href="{{ url_for('admin.backup_db') }}">Download Database Backup</a>
+</p>
+
+<form method="GET" action="{{ url_for('admin.dashboard') }}" class="date-picker-form">
+    <label for="date" style="margin:0;">View records for</label>
+    <input type="date" id="date" name="date" value="{{ selected_date.strftime('%Y-%m-%d') }}">
+    <button type="submit">Go</button>
+</form>
+
+<p>Showing records for <strong>{{ selected_date.strftime('%Y-%m-%d') }}</strong></p>
+
+<hr>
+
+<button class="toggle-btn" onclick="toggleTable('male_table')">Male Ward Reports ({{ male_reports|length }})</button>
+<div id="male_table" class="section-table">
+    <table>
+        <tr>
+            <th>Date</th><th>Prev. Patient</th><th>New Adm.</th>
+            <th>Discharge</th><th>Refer</th><th>Death</th><th>Still Present</th><th>Snake Bite</th><th>Actions</th>
+        </tr>
+        {% for r in male_reports %}
+        <tr>
+            <td>{{ r.report_date }}</td>
+            <td>{{ r.previous_patient }}</td>
+            <td>{{ r.new_admissions }}</td>
+            <td>{{ r.discharge }}</td>
+            <td>{{ r.refer }}</td>
+            <td>{{ r.death }}</td>
+            <td>{{ r.still_present }}</td>
+            <td>{{ r.snake_bite }}</td>
+            <td>
+                <a href="{{ url_for('admin.edit_ward_report', report_id=r.id) }}">Edit</a>
+                <form method="POST" action="{{ url_for('admin.delete_ward_report', report_id=r.id) }}" style="display:inline" onsubmit="return confirm('Delete this report?');">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="9">No records for this date.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+
+<button class="toggle-btn" onclick="toggleTable('female_table')">Female Ward Reports ({{ female_reports|length }})</button>
+<div id="female_table" class="section-table">
+    <table>
+        <tr>
+            <th>Date</th><th>Prev. Patient</th><th>New Adm.</th>
+            <th>Discharge</th><th>Refer</th><th>Death</th><th>Still Present</th><th>Snake Bite</th><th>Actions</th>
+        </tr>
+        {% for r in female_reports %}
+        <tr>
+            <td>{{ r.report_date }}</td>
+            <td>{{ r.previous_patient }}</td>
+            <td>{{ r.new_admissions }}</td>
+            <td>{{ r.discharge }}</td>
+            <td>{{ r.refer }}</td>
+            <td>{{ r.death }}</td>
+            <td>{{ r.still_present }}</td>
+            <td>{{ r.snake_bite }}</td>
+            <td>
+                <a href="{{ url_for('admin.edit_ward_report', report_id=r.id) }}">Edit</a>
+                <form method="POST" action="{{ url_for('admin.delete_ward_report', report_id=r.id) }}" style="display:inline" onsubmit="return confirm('Delete this report?');">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="9">No records for this date.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+
+<button class="toggle-btn" onclick="toggleTable('paediatric_table')">Paediatric Ward Reports ({{ paediatric_reports|length }})</button>
+<div id="paediatric_table" class="section-table">
+    <table>
+        <tr>
+            <th>Date</th><th>Prev. Patient</th><th>NICU</th><th>NSC</th><th>HDU</th>
+            <th>Discharge</th><th>Refer</th><th>Death</th><th>Still Present</th>
+            <th>Snake Bite</th><th>Labour Room</th>
+            <th>&lt;1mo</th><th>&lt;1yr</th><th>&lt;5yr</th><th>&gt;5yr</th><th>Actions</th>
+        </tr>
+        {% for r in paediatric_reports %}
+        <tr>
+            <td>{{ r.report_date }}</td>
+            <td>{{ r.previous_patient }}</td>
+            <td>{{ r.nicu_admissions }}</td>
+            <td>{{ r.nsc_admissions }}</td>
+            <td>{{ r.hdu_admissions }}</td>
+            <td>{{ r.discharge }}</td>
+            <td>{{ r.refer }}</td>
+            <td>{{ r.death }}</td>
+            <td>{{ r.still_present }}</td>
+            <td>{{ r.snake_bite }}</td>
+            <td>{{ r.labour_room }}</td>
+            <td>{{ r.admission_under_1month }}</td>
+            <td>{{ r.admission_under_1year }}</td>
+            <td>{{ r.admission_under_5year }}</td>
+            <td>{{ r.admission_over_5year }}</td>
+            <td>
+                <a href="{{ url_for('admin.edit_paediatric_report', report_id=r.id) }}">Edit</a>
+                <form method="POST" action="{{ url_for('admin.delete_paediatric_report', report_id=r.id) }}" style="display:inline" onsubmit="return confirm('Delete this report?');">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="16">No records for this date.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+
+<button class="toggle-btn" onclick="toggleTable('og_table')">O&amp;G Ward Reports ({{ og_reports|length }})</button>
+<div id="og_table" class="section-table">
+    <table>
+        <tr>
+            <th>Date</th><th>Prev. Patient</th><th>New Adm.</th><th>Discharge</th>
+            <th>Refer</th><th>Death</th><th>Still Present</th><th>NVD</th><th>D&amp;C</th><th>C-Section</th><th>Actions</th>
+        </tr>
+        {% for r in og_reports %}
+        <tr>
+            <td>{{ r.report_date }}</td>
+            <td>{{ r.previous_patient }}</td>
+            <td>{{ r.new_admissions }}</td>
+            <td>{{ r.discharge }}</td>
+            <td>{{ r.refer }}</td>
+            <td>{{ r.death }}</td>
+            <td>{{ r.still_present }}</td>
+            <td>{{ r.nvd }}</td>
+            <td>{{ r.dc }}</td>
+            <td>{{ r.c_section }}</td>
+            <td>
+                <a href="{{ url_for('admin.edit_og_report', report_id=r.id) }}">Edit</a>
+                <form method="POST" action="{{ url_for('admin.delete_og_report', report_id=r.id) }}" style="display:inline" onsubmit="return confirm('Delete this report?');">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="11">No records for this date.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+
+<button class="toggle-btn" onclick="toggleTable('death_table')">Death Records ({{ death_rows|length }})</button>
+<div id="death_table" class="section-table">
+    <table>
+        <tr>
+            <th>Ward</th><th>Patient Name</th><th>Father's Name</th><th>Age</th><th>Indoor #</th>
+            <th>Admission Date</th><th>Death Date</th><th>Death Time</th><th>Diagnosis</th><th>Actions</th>
+        </tr>
+        {% for row in death_rows %}
+        {% set d = row.record %}
+        <tr>
+            <td><strong>{{ row.ward }}</strong></td>
+            <td>{{ d.patient_name }}</td>
+            <td>{{ d.father_name }}</td>
+            <td>{{ d.age }}</td>
+            <td>{{ d.indoor_number }}</td>
+            <td>{{ d.admission_date }}</td>
+            <td>{{ d.death_date }}</td>
+            <td>{{ d.death_time }}</td>
+            <td>{{ d.diagnosis }}</td>
+            <td>
+                <a href="{{ url_for('admin.edit_death_record', record_id=d.id) }}">Edit</a>
+                <form method="POST" action="{{ url_for('admin.delete_death_record', record_id=d.id) }}" style="display:inline" onsubmit="return confirm('Delete this death record?');">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="10">No deaths recorded for this date.</td></tr>
+        {% endfor %}
+    </table>
+
+    <h4>Total Deaths by Ward ({{ selected_date.strftime('%Y-%m-%d') }})</h4>
+    <table>
+        <tr><th>Ward</th><th>Total Deaths</th></tr>
+        {% for ward_name, count in death_totals.items() %}
+        <tr><td>{{ ward_name }}</td><td>{{ count }}</td></tr>
+        {% else %}
+        <tr><td colspan="2">No deaths recorded for this date.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+
+<script>
+function toggleTable(id) {
+    var el = document.getElementById(id);
+    el.style.display = (el.style.display === "block") ? "none" : "block";
+}
+</script>
+{% endblock %}

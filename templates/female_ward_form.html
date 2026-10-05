@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ ward_title }} - Daily Report{% endblock %}
+
+{% block content %}
+<h3>{{ ward_title }} — Daily Report</h3>
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <p>{{ form.previous_patient.label }} {{ form.previous_patient() }}</p>
+    <p>{{ form.new_admissions.label }} {{ form.new_admissions() }}</p>
+    <p>{{ form.discharge.label }} {{ form.discharge() }}</p>
+    <p>{{ form.refer.label }} {{ form.refer() }}</p>
+    <p>{{ form.death.label }} {{ form.death() }}</p>
+    <p>{{ form.still_present.label }} {{ form.still_present() }}</p>
+    <p>{{ form.snake_bite.label }} {{ form.snake_bite() }}</p>
+
+    {{ form.submit() }}
+</form>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ ward_title }} - Daily Report{% endblock %}
+
+{% block content %}
+<h3>{{ ward_title }} — Daily Report</h3>
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <p>{{ form.previous_patient.label }} {{ form.previous_patient() }}</p>
+    <p>{{ form.nicu_admissions.label }} {{ form.nicu_admissions() }}</p>
+    <p>{{ form.nsc_admissions.label }} {{ form.nsc_admissions() }}</p>
+    <p>{{ form.hdu_admissions.label }} {{ form.hdu_admissions() }}</p>
+    <p>{{ form.discharge.label }} {{ form.discharge() }}</p>
+    <p>{{ form.refer.label }} {{ form.refer() }}</p>
+    <p>{{ form.death.label }} {{ form.death() }}</p>
+    <p>{{ form.still_present.label }} {{ form.still_present() }}</p>
+    <p>{{ form.snake_bite.label }} {{ form.snake_bite() }}</p>
+    <p>{{ form.labour_room.label }} {{ form.labour_room() }}</p>
+    <p>{{ form.admission_under_1month.label }} {{ form.admission_under_1month() }}</p>
+    <p>{{ form.admission_under_1year.label }} {{ form.admission_under_1year() }}</p>
+    <p>{{ form.admission_under_5year.label }} {{ form.admission_under_5year() }}</p>
+    <p>{{ form.admission_over_5year.label }} {{ form.admission_over_5year() }}</p>
+
+    {{ form.submit() }}
+</form>
+{% endblock %}

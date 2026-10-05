@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h3>{{ title }}</h3>
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <p>{{ form.patient_name.label }} {{ form.patient_name() }}</p>
+    <p>{{ form.father_name.label }} {{ form.father_name() }}</p>
+    <p>{{ form.age.label }} {{ form.age() }}</p>
+    <p>{{ form.admission_date.label }} {{ form.admission_date(type="date") }}</p>
+    <p>{{ form.indoor_number.label }} {{ form.indoor_number() }}</p>
+    <p>{{ form.death_date.label }} {{ form.death_date(type="date") }}</p>
+    <p>{{ form.death_time.label }} {{ form.death_time(type="time") }}</p>
+    <p>{{ form.diagnosis.label }} {{ form.diagnosis() }}</p>
+
+    {{ form.submit() }}
+</form>
+<p><a href="{{ url_for('admin.dashboard') }}">Back to Dashboard</a></p>
+{% endblock %}
